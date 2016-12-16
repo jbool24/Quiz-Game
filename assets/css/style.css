@@ -1,0 +1,50 @@
+body {
+    background-color: grey;
+    background-image: url("../images/bg.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.game-wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 40px;
+    margin-top: 120px;
+    padding: 20px;
+    height: 800px;
+    background-color: rgba(250,250,250, 0.8);
+  }
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.question {
+    background-color: honeydew;
+}
+
+.questions-box {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin: 10px 30px;
+    background-color: tomato;
+}
+
+.selection {
+    flex: 2;
+    margin: 10px;
+    padding: 20px;
+}
+.selection:hover {
+    background-color: grey;
+}
+
+#game {
+    background-color: #eee;
+}

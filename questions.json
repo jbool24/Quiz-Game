@@ -1,0 +1,24 @@
+{
+    "questions": [
+        {
+          "question": "In what children's game are participants chased by someone designated \"It\"?",
+          "answers": [
+              "Tag",
+              "Simon Says",
+              "Charades",
+              "Hopscotch"
+          ],
+          "correct": 0
+      },
+      {
+          "question": "On a radio, stations are changed by using what control?",
+          "answers": [
+              "Volume",
+              "Tuning",
+              "Bass",
+              "Treble"
+          ],
+          "correct": 1
+      }
+  ]
+}
