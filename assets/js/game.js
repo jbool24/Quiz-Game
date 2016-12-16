@@ -240,6 +240,7 @@ $(document).ready(function() {
 
     //Set up eventListener for Start button press
     $('.btn-start').on('click', function() {
+        $('#splash').addClass('hide');
         $(this).attr('class', 'hide'); //hide button
         $('#game').attr('class', 'show'); //show quiz
         gameObj.begin();
