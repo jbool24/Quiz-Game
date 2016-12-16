@@ -1,4 +1,30 @@
+var timer = {
+    self: this,
+    _id: "",
+    time: 30,
+
+    startTimer: function() {
+        self._id = setInterval(function() {
+            self.time--;
+            if (self.time <= 0) {
+                self.time = 30
+            }
+            console.log(self.time)
+        }, 1000);
+        console.log(self._id)
+
+    },
+
+    resetTimer: function() {
+        if (self._id !== "") {
+            console.log("Stopped timer id: ", self._id)
+            clearInterval(self._id);
+        }
+    }
+};
 $(document).ready(function() {
+    var totalTime = 1;
+
     console.log("READY!");
     var data = {
         "questions": [{
@@ -104,35 +130,92 @@ $(document).ready(function() {
         this.correctCount = 0;
         this.incorrectCount = 0;
         this.clockId;
-        this.time = 30;
+        this.time = totalTime;
 
 
-        self.onStart = function() {
+        self.begin = function() {
+            console.log("questions: " + self.answered);
+            //Get a question
             self.getQuestion();
-            //Start timer and reset at zero
+
+            //Start the timer but reset when it reaches zero
             self.clockId = setInterval(function() {
-                //display timer
-                $('#timer').text(self.time);
+
+                //display formated timer
+                if (self.time < 10) {
+                    let formatedTime = "0" + self.time;
+                    $('#timer').text(formatedTime);
+                } else {
+                    $('#timer').text(self.time);
+                }
 
                 self.time--;
+
                 if (self.time <= 0) {
-                    self.timeout();
+                    self.timesUp();
                 }
             }, 1000);
         };
 
-        self.getQuestion = function() {
-            self.activeQuestion = self.questions[Math.floor(Math.random() * self.questions.length)];
-            console.log(self.activeQuestion.question, self.activeQuestion.correct)
-
+        self.end = function() {
+            if (self.answered >= 10) {
+                $("#game").removeClass('show').addClass('hide');
+                $(".stat-correct").text(self.correctCount);
+                $(".stat-incorrect").text(self.incorrectCount);
+                $("#game-stats").addClass('show');
+            } else {
+                self.begin();
+            }
         };
 
-        self.isDuplicate = function(num){
-          if (self.answered.indexof(num) === -1){
-            self.displayQuestion();
-          } else {
-            self.getQuestion();
-          }
+        self.wait = function() {
+            self.stopTimer(); //stop timer
+            setTimeout(self.reset, 1000 * 3); //wait 5 sec then resume
+        };
+
+        self.timesUp = function() {
+            self.stopTimer();
+            self.incorrectCount++;
+            self.answered++;
+            $('.timeup').removeClass('hide').addClass('show');
+            $('#timer-box').addClass('highlight');
+            //flash correct answer, wait 3 seconds
+            setTimeout(self.reset, 1000 * 3); //wait 5 sec then resume
+            $('#' + self.activeQuestion.correct).effect("highlight", {}, 2500);
+        };
+
+        self.stopTimer = function() {
+            clearInterval(self.clockId); //stop timer
+        };
+
+        self.reset = function() {
+            console.log('RESET');
+            $('.correct').removeClass('show').addClass('hide');
+            $('.incorrect').removeClass('show').addClass('hide');
+            $('.timeup').removeClass('show').addClass('hide');
+            $('#timer-box').removeClass('highlight');
+            self.time = totalTime;
+            self.end();
+        };
+
+        self.getQuestion = function() {
+            var idx = Math.floor(Math.random() * self.questions.length);
+
+            if (self.isDuplicate(idx)) {
+                self.getQuestion();
+            } else {
+                self.activeQuestion = self.questions[idx];
+                self.alreadyAsked.push(idx);
+                self.displayQuestion();
+            }
+        };
+
+        self.isDuplicate = function(num) {
+            if (self.alreadyAsked.indexOf(num) === -1) {
+                return false
+            } else {
+                return true
+            }
         };
 
         self.displayQuestion = function() {
@@ -143,25 +226,12 @@ $(document).ready(function() {
             $('#3.selection').text(self.activeQuestion.answers[3]);
         };
 
-        self.timeout = function() {
-            setTimeout(self.resetTimer, 1000 * 5);
-            //highlight correct, wait 3 seconds
-            $('#'+ self.activeQuestion.correct).effect("highlight", {}, 3000);
-        };
-
-
-        self.resetTimer = function() {
-            console.log('RESET');
-            clearInterval(self.clockId);
-            self.time = 30;
-            self.onStart();
-        };
 
         self.testAnswer = function(ans) {
             if (parseInt(ans) === self.activeQuestion.correct) {
                 self.onCorrect();
                 console.log("CORRECT")
-                self.wait()
+                self.wait();
             } else {
                 self.onIncorrect();
                 console.log("INCORRECT")
@@ -170,28 +240,33 @@ $(document).ready(function() {
         };
 
         self.onCorrect = function() {
+            $('.correct').removeClass('hide').addClass('show');
             self.correctCount++;
-            //hide game display Congratulations then resume
+            self.answered++;
+            //TOOD hide game display Congratulations then resume
         };
 
         self.onIncorrect = function() {
+            $('.incorrect').removeClass('hide').addClass('show');
             self.incorrectCount++;
+            self.answered++;
         };
 
     }; //End quizGame
 
     var gameObj = new quizGame(data);
-    console.log(gameObj);
 
+    //Set up eventListener for user selection
     $('.selection').on("click", function() {
         console.log(this.id);
         gameObj.testAnswer(this.id);
     });
 
+    //Set up eventListener for Start button press
     $('.btn-start').on('click', function() {
-        $(this).attr('class', 'hide');
-        $('#game').attr('class', 'show');
-        gameObj.onStart();
+        $(this).attr('class', 'hide'); //hide button
+        $('#game').attr('class', 'show'); //show quiz
+        gameObj.begin();
     });
 
 });

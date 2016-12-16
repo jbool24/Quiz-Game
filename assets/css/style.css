@@ -12,9 +12,10 @@ body {
     font-size: 40px;
     margin-top: 120px;
     padding: 20px;
-    height: 800px;
-    background-color: rgba(250,250,250, 0.8);
-  }
+    height: auto;
+    min-height: 600px;
+    background-color: rgba(250, 250, 250, 0.8);
+}
 
 .hide {
     display: none;
@@ -22,6 +23,11 @@ body {
 
 .show {
     display: block;
+}
+
+.highlight {
+    background-color: rgba(255, 0, 0, 0.7);
+
 }
 
 .question {
@@ -41,6 +47,7 @@ body {
     margin: 10px;
     padding: 20px;
 }
+
 .selection:hover {
     background-color: grey;
 }
