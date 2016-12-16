@@ -1,29 +1,5 @@
-var timer = {
-    self: this,
-    _id: "",
-    time: 30,
-
-    startTimer: function() {
-        self._id = setInterval(function() {
-            self.time--;
-            if (self.time <= 0) {
-                self.time = 30
-            }
-            console.log(self.time)
-        }, 1000);
-        console.log(self._id)
-
-    },
-
-    resetTimer: function() {
-        if (self._id !== "") {
-            console.log("Stopped timer id: ", self._id)
-            clearInterval(self._id);
-        }
-    }
-};
 $(document).ready(function() {
-    var totalTime = 1;
+    var totalTime = 10;
 
     console.log("READY!");
     var data = {

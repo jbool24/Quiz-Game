@@ -3,6 +3,21 @@ body {
     background-image: url("../images/bg.gif");
     background-repeat: no-repeat;
     background-size: cover;
+    font-family: 'Exo', sans-serif;
+}
+
+h1 {
+    font-size: 60px;
+}
+
+h2 {
+    font-size: 36px;
+}
+
+p {
+    text-align: left;
+    margin: 0 0 10px;
+    padding: 0 300px;
 }
 
 .game-wrapper {
@@ -27,31 +42,35 @@ body {
 
 .highlight {
     background-color: rgba(255, 0, 0, 0.7);
-
 }
 
 .question {
-    background-color: honeydew;
+    padding: 60px;
+    background-color: rgba(240, 255, 240, 1);
 }
 
 .questions-box {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    margin: 10px 30px;
-    background-color: tomato;
+    margin: 30px;
 }
 
 .selection {
-    flex: 2;
+    flex-grow: 1;
     margin: 10px;
     padding: 20px;
+    width: 40%;
+    background-color:  #667D8A;
 }
 
 .selection:hover {
     background-color: grey;
 }
 
+.btn-start{
+  margin: auto 0;
+}
 #game {
     background-color: #eee;
 }
