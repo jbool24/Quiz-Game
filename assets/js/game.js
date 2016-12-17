@@ -146,7 +146,7 @@ $(document).ready(function() {
 
         self.wait = function() {
             self.stopTimer(); //stop timer
-            setTimeout(self.reset, 1000 * 3); //wait 5 sec then resume
+            setTimeout(self.reset, 1000 * 1.5); //wait 5 sec then resume
         };
 
         self.timesUp = function() {
@@ -172,6 +172,18 @@ $(document).ready(function() {
             $('#timer-box').removeClass('highlight');
             self.time = totalTime;
             self.end();
+        };
+
+        self.clearGame = function() {
+          //clear all stored data
+            self.activeQuestion = {};
+            self.answered = 0;
+            self.alreadyAsked = [];
+            self.correctCount = 0;
+            self.incorrectCount = 0;
+            $("#game-stats").removeClass('show').addClass('hide'); //hide stats
+            $('#splash').addClass('show'); //show splash
+            $('#btn-start').removeClass('hide').addClass('show'); //show start btn
         };
 
         self.getQuestion = function() {
@@ -238,11 +250,15 @@ $(document).ready(function() {
         gameObj.testAnswer(this.id);
     });
 
+    $('.btn-restart').on('click', function(){
+        gameObj.clearGame();
+    });
+
     //Set up eventListener for Start button press
-    $('.btn-start').on('click', function() {
-        $('#splash').addClass('hide');
-        $(this).attr('class', 'hide'); //hide button
-        $('#game').attr('class', 'show'); //show quiz
+    $('#btn-start').on('click', function() {
+        $('#splash').removeClass('show').addClass('hide');
+        $(this).removeClass('show').addClass('hide'); //hide button
+        $('#game').addClass('show'); //show quiz
         gameObj.begin();
     });
 
